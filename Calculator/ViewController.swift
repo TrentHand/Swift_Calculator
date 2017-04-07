@@ -9,12 +9,49 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    @IBOutlet weak var display: UILabel!
+    
+    var userIsInTheMiddleOfTyping = false
+    
     @IBAction func touchDigit(_ sender: UIButton) {
         let digit = sender.currentTitle!
-        print("\(String(describing: digit)) was touched")
+        if userIsInTheMiddleOfTyping{
+            let textCurrentlyInDisplay = display.text!
+            display.text = textCurrentlyInDisplay + digit
+        } else {
+            display.text = digit
+            userIsInTheMiddleOfTyping = true
+        }
     }
-
-
+    
+    //convert all the values from strings to doubles and back
+    var displayValue: Double{
+        get{
+            return Double(display.text!)!
+        }
+        set {
+            //newValue is a special var built into Swift
+            display.text = String(newValue)
+        }
+    }
+    
+    
+    @IBAction func performOperation(_ sender: UIButton) {
+        userIsInTheMiddleOfTyping = false
+        if let mathmaticalSymbol = sender.currentTitle {
+            switch mathmaticalSymbol {
+            case "π":
+                //creates the pi number when clicked
+                displayValue = Double.pi
+            case "√":
+                //converts current number into square root
+                displayValue = sqrt(displayValue)
+            default:
+                break
+            }
+        }
+    }
+    
 }
 
